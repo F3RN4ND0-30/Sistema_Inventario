@@ -1,0 +1,19 @@
+/* Personalización de los bordes de las tarjetas */
+.card {
+    border-radius: 10px;
+    border: 1px solid #ddd;
+}
+
+.card-header {
+    border-radius: 10px 10px 0 0;
+    font-size: 1.2rem;
+}
+
+.card-body {
+    background-color: #f8f9fa;
+}
+
+/* Añadir sombras a las tarjetas */
+.card.shadow-sm {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
