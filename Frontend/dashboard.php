@@ -109,8 +109,8 @@ $areas = $conn->query("SELECT IdArea, descripcion FROM Tb_Areas");
                                 <label for="observacion" class="form-label">Observación</label>
                                 <textarea
                                     class="form-control form-control-sm"
-                                    id="observacion"
-                                    name="observacion"
+                                    id="observaciones"
+                                    name="observaciones"
                                     placeholder="Ingresar Observación"
                                     rows="3"></textarea>
                             </div>
@@ -475,12 +475,13 @@ $areas = $conn->query("SELECT IdArea, descripcion FROM Tb_Areas");
                                 <td><?= htmlspecialchars($row['descripcion']) ?></td>
                                 <td>
                                     <button class="btn btn-sm 
-        <?= $row['Estado'] === 'Operativo' ? 'btn-success' : ($row['Estado'] === 'EnReparacion' ? 'btn-warning' : ($row['Estado'] === 'Baja' ? 'btn-danger' : ($row['Estado'] === 'EnPrestamo' ? 'btn-primary' : 'btn-secondary'))) ?>"
+    <?php echo $row['Estado'] === 'Operativo' ? 'btn-success' : ($row['Estado'] === 'EnReparacion' ? 'btn-warning' : ($row['Estado'] === 'Baja' ? 'btn-danger' : ($row['Estado'] === 'EnPrestamo' ? 'btn-primary' : 'btn-secondary'))); ?>"
                                         data-bs-toggle="modal"
                                         data-bs-target="#modalEditarEstado"
-                                        data-id="<?= $row['IdDispositivo'] ?>"
-                                        data-estado="<?= $row['Estado'] ?>">
-                                        <?= $row['Estado'] ?>
+                                        data-id="<?php echo $row['IdDispositivo']; ?>"
+                                        data-estado="<?php echo $row['Estado']; ?>"
+                                        data-observacion="<?php echo htmlspecialchars($row['Observaciones'], ENT_QUOTES); ?>">
+                                        <?php echo $row['Estado']; ?>
                                     </button>
                                 </td>
                                 <td><?= $row['FechaRegistro'] ?></td>
@@ -510,19 +511,31 @@ $areas = $conn->query("SELECT IdArea, descripcion FROM Tb_Areas");
 
                             <div class="mb-3">
                                 <label for="modalEstado" class="form-label">Estado</label>
-                                <select class="form-select" id="modalEstado" name="estado">
+                                <select class="form-select" id="modalEstado" name="estado" required>
                                     <option value="Operativo">Operativo</option>
                                     <option value="EnReparacion">En Reparación</option>
                                     <option value="Baja">De Baja</option>
                                     <option value="EnPrestamo">En Préstamo</option>
                                 </select>
                             </div>
+
+                            <div class="mb-3">
+                                <label for="observacion" class="form-label">Observación</label>
+                                <textarea
+                                    class="form-control form-control-sm"
+                                    id="observacion"
+                                    name="observacion"
+                                    placeholder="Ingresar Observación"
+                                    rows="3"></textarea>
+                            </div>
+
                             <button type="submit" class="btn btn-primary">Actualizar Estado</button>
                         </form>
                     </div>
                 </div>
             </div>
         </div>
+
 
 
         <script src="js/agregar_dispositivo.js"></script>
@@ -532,37 +545,47 @@ $areas = $conn->query("SELECT IdArea, descripcion FROM Tb_Areas");
 
         <script>
             $('#modalEditarEstado').on('show.bs.modal', function(event) {
-                var button = $(event.relatedTarget); // Botón que activó el modal
-                var idDispositivo = button.data('id'); // ID del dispositivo
-                var estado = button.data('estado'); // Estado actual del dispositivo
-                console.log("idDispositivo:", idDispositivo);
-                console.log("estado:", estado);
+                const button = $(event.relatedTarget);
+                const idDispositivo = button.data('id');
+                const estado = button.data('estado');
+                const observacion = button.data('observacion') || '';
 
-                // Seteamos el valor del ID y el estado en el formulario del modal
+                console.log('🟡 Observación desde botón:', observacion); // ← agrega esto
+
                 $('#modalIdDispositivo').val(idDispositivo);
                 $('#modalEstado').val(estado);
+                $('#observacion').val(observacion);
+
+                console.log('🟢 Valor asignado a textarea:', $('#observacion').val()); // ← y esto
             });
 
+            // Manejar el submit del formulario para enviar los datos por AJAX
             $('#formEditarEstado').submit(function(e) {
-                e.preventDefault(); // Prevenimos el comportamiento por defecto (recargar la página)
+                e.preventDefault(); // Prevenir recarga
 
                 var idDispositivo = $('#modalIdDispositivo').val();
                 var estado = $('#modalEstado').val();
+                var observacion = $('#observacion').val();
 
-                // Enviar la solicitud AJAX al backend para actualizar el estado
                 $.ajax({
-                    url: '../Backend/dispositivos/actualizar_estado.php', // Ruta del archivo PHP que maneja la actualización
+                    url: '../Backend/dispositivos/actualizar_estado.php',
                     type: 'POST',
                     data: {
                         idDispositivo: idDispositivo,
-                        estado: estado
+                        estado: estado,
+                        observacion: observacion
                     },
                     success: function(response) {
-                        console.log(response); // Ver la respuesta en consola
-                        location.reload(); // Recargar la página para ver el cambio
+                        console.log('Respuesta del servidor:', response);
+                        // Recargar la tabla sin recargar toda la página (opcional)
+                        // actualizarTabla();
+
+                        // Por simplicidad, recargamos toda la página para actualizar datos
+                        location.reload();
                     },
                     error: function(xhr, status, error) {
-                        console.log(error); // Mostrar el error en consola
+                        console.error('Error en la petición AJAX:', error);
+                        alert('Error al actualizar el dispositivo.');
                     }
                 });
             });

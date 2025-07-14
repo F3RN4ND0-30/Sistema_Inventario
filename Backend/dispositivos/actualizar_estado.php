@@ -1,29 +1,40 @@
 <?php
-require_once '../db/db.php'; // Ruta correcta para la conexión a la base de datos
+require_once '../db/db.php'; // Conexión a la base de datos
 
-// Verificamos si la solicitud es POST
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $idDispositivo = $_POST['idDispositivo']; // Obtenemos el ID del dispositivo
-    $estado = $_POST['estado']; // Obtenemos el nuevo estado
+// Forzar respuesta en JSON
+header('Content-Type: application/json; charset=utf-8');
 
-    // Comprobamos si ambos valores son válidos
-    if (isset($idDispositivo) && isset($estado)) {
-        
-        // Preparamos la consulta SQL para actualizar el estado del dispositivo
-        $stmt = $conn->prepare("UPDATE tb_dispositivos SET Estado = ? WHERE IdDispositivo = ?");
-        $stmt->bind_param("si", $estado, $idDispositivo); // 's' para el estado y 'i' para el ID
-
-        // Ejecutamos la consulta
-        if ($stmt->execute()) {
-            echo json_encode(['status' => 'success', 'message' => 'Estado actualizado correctamente']);
-        } else {
-            echo json_encode(['status' => 'error', 'message' => 'Error al actualizar el estado']);
-        }
-
-        $stmt->close();
-    } else {
-        echo json_encode(['status' => 'error', 'message' => 'Datos incompletos']);
-    }
-} else {
+// Validar tipo de petición
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     echo json_encode(['status' => 'error', 'message' => 'Método no permitido']);
+    exit;
 }
+
+// Obtener y sanitizar los datos del POST
+$idDispositivo = isset($_POST['idDispositivo']) ? intval($_POST['idDispositivo']) : null;
+$estado = isset($_POST['estado']) ? trim($_POST['estado']) : null;
+$observacion = isset($_POST['observacion']) ? trim($_POST['observacion']) : null;
+
+// Validar datos requeridos
+if (!$idDispositivo || !$estado) {
+    echo json_encode(['status' => 'error', 'message' => 'Datos incompletos']);
+    exit;
+}
+
+// Preparar y ejecutar la consulta de actualización
+$stmt = $conn->prepare("UPDATE tb_dispositivos SET Estado = ?, Observaciones = ? WHERE IdDispositivo = ?");
+if (!$stmt) {
+    echo json_encode(['status' => 'error', 'message' => 'Error al preparar la consulta']);
+    exit;
+}
+
+$stmt->bind_param("ssi", $estado, $observacion, $idDispositivo);
+
+if ($stmt->execute()) {
+    echo json_encode(['status' => 'success', 'message' => 'Estado y observación actualizados correctamente']);
+} else {
+    echo json_encode(['status' => 'error', 'message' => 'Error al ejecutar la actualización']);
+}
+
+$stmt->close();
+$conn->close();

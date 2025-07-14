@@ -1,4 +1,14 @@
-// Función para actualizar la tabla de dispositivos
+// Escapar caracteres especiales para evitar errores en HTML
+function escapeHtmlAttr(str) {
+    if (str == null) return '';
+    return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;");
+}
+
 async function actualizarTabla() {
     const tbody = document.getElementById('tabla-dispositivos');
     console.log('▶️ actualizarTabla disparada, tbody encontrada:', !!tbody);
@@ -33,16 +43,33 @@ async function actualizarTabla() {
                 EnPrestamo: 'btn-primary'
             }[row.Estado] || 'btn-secondary';
 
+            const idDispositivo = escapeHtmlAttr(row.IdDispositivo);
+            const estado = escapeHtmlAttr(row.Estado);
+            const observacion = escapeHtmlAttr(row.Observaciones || '');
+            const codigoPatrimonial = escapeHtmlAttr(row.CodigoPatrimonial || '');
+            const nombreTipo = escapeHtmlAttr(row.NombreTipo || '');
+            const descripcion = escapeHtmlAttr(row.descripcion || '');
+            const fechaRegistro = escapeHtmlAttr(row.FechaRegistro || '');
+
             tbody.insertAdjacentHTML('beforeend', `
-        <tr>
-          <td>${row.IdDispositivo}</td>
-          <td>${row.CodigoPatrimonial}</td>
-          <td>${row.NombreTipo || ''}</td>
-          <td>${row.descripcion || ''}</td>
-          <td><button class="btn btn-sm ${estadoClass}">${row.Estado}</button></td>
-          <td>${row.FechaRegistro}</td>
-          <td>${row.Observaciones || ''}</td>
-        </tr>`);
+                <tr>
+                    <td>${idDispositivo}</td>
+                    <td>${codigoPatrimonial}</td>
+                    <td>${nombreTipo}</td>
+                    <td>${descripcion}</td>
+                    <td>
+                        <button class="btn btn-sm ${estadoClass}"
+                            data-bs-toggle="modal"
+                            data-bs-target="#modalEditarEstado"
+                            data-id="${idDispositivo}"
+                            data-estado="${estado}"
+                            data-observacion="${observacion}">
+                            ${estado}
+                        </button>
+                    </td>
+                    <td>${fechaRegistro}</td>
+                    <td>${observacion}</td>
+                </tr>`);
         });
 
         console.log('✅ Tabla actualizada correctamente con', data.length, 'filas');
@@ -52,6 +79,7 @@ async function actualizarTabla() {
         tbody.innerHTML = '<tr><td colspan="7" class="text-center text-danger">Error cargando datos.</td></tr>';
     }
 }
+
 
 document.addEventListener('DOMContentLoaded', actualizarTabla);
 
