@@ -64,18 +64,19 @@ async function actualizarTabla() {
                     </td>
                     <td>${fechaRegistro}</td>
                     <td>${observacion}</td>
-                </tr>`);
+                </tr>
+            `);
         });
 
     } catch (error) {
         tbody.innerHTML = '<tr><td colspan="7" class="text-center text-danger">Error cargando datos.</td></tr>';
+        console.error('Error en actualizarTabla:', error);
     }
 }
 
-
-document.addEventListener('DOMContentLoaded', actualizarTabla);
-
 document.addEventListener('DOMContentLoaded', () => {
+    actualizarTabla();
+
     const btn = document.getElementById('btnAgregarDispositivo');
     if (!btn) {
         console.error("No se encontró el botón 'btnAgregarDispositivo'");
@@ -83,7 +84,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     btn.addEventListener('click', async () => {
-        // Obtener valores de campos generales
         const tipoSelect = document.getElementById('modalTipoDispositivo');
         const tipoID = tipoSelect?.value?.trim();
         if (!tipoID) return alert('Selecciona un tipo.');
@@ -131,15 +131,33 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (!cod || !area || !estado) return alert('Completa todos los campos requeridos.');
 
-        const datosDisp = {
-            codigo_patrimonial: cod,
-            id_area: area,
-            estado,
-            observaciones: observacion,
-            tipo_dispositivo: tipoID
-        };
+        // Validar si código patrimonial ya existe
+        try {
+            const checkResp = await fetch('../Backend/dispositivos/verificar_codigo.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ codigo_patrimonial: cod })
+            });
 
-        // Obtener campos específicos según tipo
+            const contentType = checkResp.headers.get('content-type');
+            if (!checkResp.ok || !contentType || !contentType.includes('application/json')) {
+                throw new Error('Respuesta inesperada del servidor al verificar código patrimonial');
+            }
+
+            const checkJson = await checkResp.json();
+
+            if (checkJson.existe) {
+                alert('⚠️ El código patrimonial ya existe. Por favor, usa uno diferente.');
+                return;
+            }
+
+        } catch (err) {
+            alert('Error verificando el código patrimonial: ' + err.message);
+            console.error(err);
+            return;
+        }
+
+        // Obtener campos específicos
         const cont = document.querySelector(selectorCont);
         const datosEspec = {};
         if (cont && !cont.classList.contains('d-none')) {
@@ -151,6 +169,14 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
 
+        const datosDisp = {
+            codigo_patrimonial: cod,
+            id_area: area,
+            estado,
+            observaciones: observacion,
+            tipo_dispositivo: tipoID
+        };
+
         try {
             // Guardar dispositivo general
             let resp = await fetch('../Backend/dispositivos/guardar_dispositivo.php', {
@@ -159,10 +185,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 body: JSON.stringify(datosDisp)
             });
 
-            if (!resp.ok) throw new Error('Error guardando dispositivo general');
-
             const jsonDisp = await resp.json();
-            if (!jsonDisp.success) throw new Error(jsonDisp.message || 'Error guardando dispositivo');
+            if (!resp.ok || !jsonDisp.success) {
+                throw new Error(jsonDisp.message || 'Error guardando dispositivo general');
+            }
 
             // Guardar detalle
             const idDispositivo = jsonDisp.id;
@@ -179,14 +205,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 body: JSON.stringify(datosEspec)
             });
 
-            if (!resp.ok) throw new Error('Error guardando detalle dispositivo');
-
             const jsonDet = await resp.json();
-            if (!jsonDet.success) throw new Error(jsonDet.message || 'Error guardando detalle');
+            if (!resp.ok || !jsonDet.success) {
+                throw new Error(jsonDet.message || 'Error guardando detalle del dispositivo');
+            }
 
             alert('✅ Dispositivo y detalle guardados correctamente.');
 
-            // Limpiar campos y cerrar modal
             limpiarCampos();
 
             const modal = document.getElementById('modalAgregarDispositivo');
@@ -195,11 +220,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (modalBootstrap) modalBootstrap.hide();
             }
 
-            // Actualizar tabla
             await actualizarTabla();
 
         } catch (error) {
-            alert('Error: ' + error.message);
+            alert('🚫 Error al guardar dispositivo: ' + error.message);
             console.error(error);
         }
     });
@@ -211,27 +235,20 @@ document.addEventListener('DOMContentLoaded', () => {
             if (el) el.value = '';
         });
 
-        // Ocultar todos los contenedores específicos y limpiar sus inputs
         const contenedores = document.querySelectorAll('[id^="campos"]');
         contenedores.forEach(cont => {
-            cont.classList.add('d-none'); // 👈 Oculta el contenedor
+            cont.classList.add('d-none');
             const inputs = cont.querySelectorAll('input, textarea');
             inputs.forEach(input => input.value = '');
         });
 
-        // Reiniciar select de tipo
         const tipoSelect = document.getElementById('modalTipoDispositivo');
         if (tipoSelect) {
             tipoSelect.selectedIndex = 0;
-            tipoSelect.dispatchEvent(new Event('change')); // 👈 Dispara el evento para ocultar campos si hace falta
+            tipoSelect.dispatchEvent(new Event('change'));
         }
 
-        // Reiniciar select de estado
         const estadoSelect = document.getElementById('crearEstado');
         if (estadoSelect) estadoSelect.selectedIndex = 0;
     }
-
-
-    // Actualiza tabla al cargar la página
-    actualizarTabla();
 });

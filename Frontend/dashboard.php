@@ -58,7 +58,7 @@ $areas = $conn->query("SELECT IdArea, descripcion FROM Tb_Areas");
             <!-- Formulario de Dispositivos -->
             <div class="col-lg-6 col-md-8 col-sm-10">
                 <div class="card shadow-sm border rounded-3">
-                    <div class="card-header bg-primary text-white d-flex align-items-center">
+                    <div class="card-header bg-celeste-pastel text-dark d-flex align-items-center">
                         <i class="material-icons me-2">assignment_ind</i>
                         <span class="fw-bold">Dispositivos</span>
                     </div>
@@ -113,7 +113,7 @@ $areas = $conn->query("SELECT IdArea, descripcion FROM Tb_Areas");
             <!-- Formulario de Tipo Dispositivo -->
             <div class="col-lg-6 col-md-8 col-sm-10 mt-4 mt-md-0">
                 <div class="card shadow-sm border rounded-3">
-                    <div class="card-header bg-success text-white d-flex align-items-center">
+                    <div class="card-header bg-verde-pastel bg-success text-black d-flex align-items-center">
                         <i class="material-icons me-2">location_on</i>
                         <span class="fw-bold">Tipo Dispositivo</span>
                     </div>
@@ -484,7 +484,7 @@ $areas = $conn->query("SELECT IdArea, descripcion FROM Tb_Areas");
                                 <td><?= htmlspecialchars($row['descripcion']) ?></td>
                                 <td>
                                     <button class="btn btn-sm 
-            <?php echo $row['Estado'] === 'Operativo' ? 'btn-success' : ($row['Estado'] === 'EnReparacion' ? 'btn-warning' : ($row['Estado'] === 'Baja' ? 'btn-danger' : ($row['Estado'] === 'EnPrestamo' ? 'btn-primary' : 'btn-secondary'))); ?>"
+            <?php echo $row['Estado'] === 'Operativo' ? 'btn-success-pastel' : ($row['Estado'] === 'EnReparacion' ? 'btn-warning-pastel' : ($row['Estado'] === 'Baja' ? 'btn-danger-pastel' : ($row['Estado'] === 'EnPrestamo' ? 'btn-primary-pastel' : 'btn-secondary-pastel'))); ?>"
                                         data-bs-toggle="modal"
                                         data-bs-target="#modalEditarEstado"
                                         data-id="<?php echo $row['IdDispositivo']; ?>"
@@ -553,7 +553,6 @@ $areas = $conn->query("SELECT IdArea, descripcion FROM Tb_Areas");
     <script src="js/mostrar_tipodispositivo.js"></script>
     <script src="js/ocultar_campos.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
-    <script src="js/filtro_choices.js"></script>
     <script src="js/filtro_busqueda.js"></script>
 
 

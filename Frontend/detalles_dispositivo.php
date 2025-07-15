@@ -13,67 +13,48 @@ if (!isset($_SESSION['usuario'])) {
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Detalles del Dispositivo</title>
+
+    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
-    
-    <!-- Enlazamos el archivo CSS -->
-    <link rel="stylesheet" href="/SISTEMA_INVENTARIO/Backend/css/estilos.css">
-    <style>
-        /* Fondo suave y altura mínima para que ocupe toda la pantalla */
-        body {
-            background-color: #f0f2f5;
-            min-height: 100vh;
-        }
 
-        /* Contenedor centrado y con padding */
-        .container {
-            padding-top: 2rem;
-            padding-bottom: 2rem;
-        }
-
-        /* Ajustar el área del formulario */
-        #formBuscar {
-            max-width: 700px;
-            margin: 0 auto;
-        }
-
-        /* Espacio entre el navbar y el contenido */
-        main {
-            padding-top: 1.5rem;
-        }
-    </style>
+    <!-- Tu CSS personalizado -->
+    <link rel="stylesheet" href="/SISTEMA_INVENTARIO/Backend/css/estilos.css" />
 </head>
 
-<body>
+<body class="bg-light">
 
     <?php include 'navbar.php'; ?>
 
-    <main class="container bg-white rounded shadow-sm">
-        <h1 class="mb-4 text-center">Buscar Detalles del Dispositivo</h1>
+    <main class="container bg-white rounded shadow-sm p-4" style="max-width: 950px; margin-top: 2rem;">
+        <div class="text-center mb-4">
+            <h4 class="text-secondary">Buscar Detalles del Dispositivo</h4>
+        </div>
 
-        <form id="formBuscar" class="row g-3" onsubmit="verDetalles(event)">
-            <div class="col-md-8">
-                <input
-                    type="text"
-                    id="inputCodPatrimonial"
-                    name="inputCodPatrimonial"
-                    class="form-control"
-                    placeholder="Ingrese Código Patrimonial"
-                    required />
-            </div>
-            <div class="col-md-4 d-grid">
-                <button type="submit" class="btn btn-primary">Buscar</button>
-            </div>
-        </form>
+        <div class="bg-white p-4 rounded shadow-sm mx-auto" style="max-width: 800px;">
+            <form id="formBuscar" class="row g-3" onsubmit="verDetalles(event)">
+                <div class="col-md-8">
+                    <input
+                        type="text"
+                        id="inputCodPatrimonial"
+                        name="inputCodPatrimonial"
+                        class="form-control"
+                        placeholder="Ingrese Código Patrimonial"
+                        required />
+                </div>
+                <div class="col-md-4 d-grid">
+                    <button type="submit" class="btn btn-primary">Buscar</button>
+                </div>
+            </form>
 
-        <!-- Div para cargar resultados, con clase para aplicar estilos -->
-        <div id="detallesDispositivo" class="mt-4 detalles-contenedor"></div>
+            <div id="detallesDispositivo" class="mt-4 detalles-contenedor"></div>
+        </div>
     </main>
 
+    <!-- JS y AJAX -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
     <script>
         function verDetalles(event) {
-            event.preventDefault(); // Evita recarga
+            event.preventDefault();
 
             const codPatrimonial = $('#inputCodPatrimonial').val().trim();
             if (!codPatrimonial) {
@@ -88,10 +69,10 @@ if (!isset($_SESSION['usuario'])) {
                     codPatrimonial
                 },
                 success: function(respuesta) {
-                    $('#detallesDispositivo').html(respuesta);
+                    $('#detallesDispositivo').hide().html(respuesta).fadeIn('slow');
                 },
                 error: function() {
-                    alert("Error al obtener los detalles");
+                    $('#detallesDispositivo').html('<div class="alert alert-danger">Error al obtener los detalles</div>');
                 }
             });
         }

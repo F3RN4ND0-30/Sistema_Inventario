@@ -36,55 +36,56 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 ?>
 
-<!-- HTML con Bootstrap -->
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" />
     <title>Login - Inventario</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/SISTEMA_INVENTARIO/Backend/css/estilos.css" />
 </head>
-<body class="bg-light d-flex align-items-center" style="height: 100vh;">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-4">
-                <div class="card shadow-sm">
-                    <div class="card-body">
-                        <h3 class="card-title text-center mb-4">Iniciar Sesión</h3>
 
-                        <?php if (!empty($error)): ?>
-                            <div class="alert alert-danger">
-                                <?= htmlspecialchars($error) ?>
-                            </div>
-                        <?php endif; ?>
+<body class="login-page d-flex align-items-center justify-content-center" style="min-height: 100vh;">
+    <div class="text-center">
+        <div class="login-header mb-4">
+            <h1 class="titulo-institucional">Sistema de Inventario del Área de Sistemas</h1>
+        </div>
 
-                        <form method="post" action="login.php">
-                            <div class="mb-3">
-                                <label for="username" class="form-label">Usuario</label>
-                                <input type="text" class="form-control" name="username" required>
-                            </div>
+        <div class="login-container">
+            <div class="login-image" role="img" aria-label="Escudo de Pisco"></div>
 
-                            <div class="mb-3">
-                                <label for="password" class="form-label">Contraseña</label>
-                                <input type="password" class="form-control" name="password" required>
-                            </div>
+            <div class="login-form">
+                <h3>Iniciar Sesión</h3>
 
-                            <div class="d-grid">
-                                <button type="submit" class="btn btn-primary">Ingresar</button>
-                            </div>
-                        </form>
-
-                        <div class="mt-3 text-center">
-                            <small>¿No tienes una cuenta? <a href="register.php">Regístrate</a></small>
-                        </div>
+                <?php if (!empty($error)): ?>
+                    <div class="alert alert-danger" role="alert">
+                        <?= htmlspecialchars($error) ?>
                     </div>
+                <?php endif; ?>
+
+                <form method="post" action="login.php" novalidate>
+                    <div class="mb-3">
+                        <label for="username" class="form-label">Usuario</label>
+                        <input type="text" class="form-control" id="username" name="username" required autofocus />
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="password" class="form-label">Contraseña</label>
+                        <input type="password" class="form-control" id="password" name="password" required />
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-100">Ingresar</button>
+                </form>
+
+                <div class="mt-3 text-center">
+                    <small>¿No tienes una cuenta? <a href="register.php">Regístrate</a></small>
                 </div>
             </div>
         </div>
     </div>
-
-    <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-</html>
 
+</html>

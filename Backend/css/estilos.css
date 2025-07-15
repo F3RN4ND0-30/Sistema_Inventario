@@ -32,15 +32,159 @@
 
 /* === Botón Agregar === */
 #btnAgregarDispositivo {
-    background-color: #007bff;
-    border-color: #007bff;
-    box-shadow: 0 4px 6px rgba(0, 123, 255, 0.4);
+    background-color: #a3d5ff;
+    color: #003f5c;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 16px;
     transition: background-color 0.3s ease;
 }
 
 #btnAgregarDispositivo:hover {
-    background-color: #0056b3;
-    border-color: #0056b3;
+    background-color: #87c8f7;
+    color: #002b3b;
+}
+
+/* Colores */
+.bg-celeste-pastel {
+    background-color: #add8e6 !important;
+    /* ¡Usamos !important para forzar el cambio! */
+    color: #000000;
+    /* opcional, buen contraste */
+}
+
+.bg-verde-pastel {
+    background-color: #d8ec8f !important;
+    /* ¡Usamos !important para forzar el cambio! */
+    color: #000000;
+    /* opcional, buen contraste */
+}
+
+.btn-success-pastel {
+    background-color: #d4edda !important;
+    color: #155724 !important;
+    border: none;
+}
+
+.btn-warning-pastel {
+    background-color: #fff3cd !important;
+    color: #856404 !important;
+    border: none;
+}
+
+.btn-danger-pastel {
+    background-color: #f8d7da !important;
+    color: #721c24 !important;
+    border: none;
+}
+
+.btn-primary-pastel {
+    background-color: #cce5ff !important;
+    color: #004085 !important;
+    border: none;
+}
+
+.btn-secondary-pastel {
+    background-color: #e2e3e5 !important;
+    color: #383d41 !important;
+    border: none;
+}
+
+/* Página de login */
+.login-page {
+    background-color: #e3f2fd;
+    padding: 20px;
+}
+
+/* Título institucional */
+.titulo-institucional {
+    font-size: 1.8rem;
+    color: #0d47a1;
+    font-weight: 600;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* Contenedor de login completo */
+.login-container {
+    max-width: 880px;
+    width: 100%;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 0 18px rgba(0, 0, 0, 0.1);
+    display: flex;
+    overflow: hidden;
+    margin: 0 auto;
+}
+
+/* Imagen del escudo */
+.login-image {
+    flex: 1;
+    background: url('../img/Escudo_de_Pisco.png') center center no-repeat;
+    background-size: contain;
+    min-height: 420px;
+    background-color: #f0f0f0;
+}
+
+/* Formulario */
+.login-form {
+    flex: 1;
+    padding: 40px 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* Botón y campos */
+.login-form h3 {
+    color: #1e88e5;
+    font-weight: 700;
+    margin-bottom: 25px;
+}
+
+.btn-primary {
+    background-color: #90caf9;
+    border-color: #90caf9;
+    color: #003366;
+    font-weight: 600;
+}
+
+.btn-primary:hover {
+    background-color: #64b5f6;
+    border-color: #64b5f6;
+    color: #002244;
+}
+
+.alert-danger {
+    background-color: #f8d7da;
+    color: #842029;
+    border-color: #f5c2c7;
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+    .login-container {
+        flex-direction: column;
+        max-width: 90%;
+    }
+
+    .login-image {
+        order: 2;
+        min-height: 200px;
+    }
+
+    .login-form {
+        order: 1;
+        padding: 30px 20px;
+    }
+}
+
+
+/* Estilo general */
+.container {
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    padding: 30px;
 }
 
 /* === Filtro y buscador contenedor === */
@@ -58,7 +202,8 @@
     background-color: #fff;
     border: 1px solid #ced4da;
     border-radius: 10px;
-    padding: 0.15rem 0; /* SOLO padding vertical */
+    padding: 0.15rem 0;
+    /* SOLO padding vertical */
     width: 220px;
     height: 38px;
     display: flex;
@@ -69,23 +214,58 @@
 /* Filtro SELECT nativo */
 .filtro-contenedor select.form-select {
     border: none;
-    padding: 0 10px; /* padding interno para que el texto no quede pegado */
+    padding: 0 10px;
+    /* padding interno para que el texto no quede pegado */
     height: 100%;
     width: 100%;
     background: transparent;
     color: #000;
     box-shadow: none;
     font-size: 1rem;
-    appearance: none; /* mantiene la flecha nativa */
-    box-sizing: border-box; /* que el padding se considere dentro del ancho */
-    line-height: 38px; /* para centrar verticalmente el texto */
-    margin: 0; /* quitar márgenes extras */
+    appearance: none;
+    /* mantiene la flecha nativa */
+    box-sizing: border-box;
+    /* que el padding se considere dentro del ancho */
+    line-height: 38px;
+    /* para centrar verticalmente el texto */
+    margin: 0;
+    /* quitar márgenes extras */
 }
 
 .filtro-contenedor select.form-select option {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+body.bg-light {
+    background-color: #e9ecef !important;
+}
+
+/* Tabla de dashboard */
+table.table {
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.table thead {
+    background-color: #f0f4f8;
+    color: #333;
+    font-weight: 600;
+}
+
+.table th,
+.table td {
+    vertical-align: middle;
+    text-align: center;
+}
+
+/* filtros */
+.filtro-contenedor select,
+#inputBuscarCodigo {
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    padding: 8px;
 }
 
 /* === Tabla de dispositivos === */
@@ -149,61 +329,96 @@
 }
 
 /* === Modal === */
-.modal-header {
-    background-color: #007bff;
-    color: white;
+.modal-content {
+    border-radius: 10px;
 }
 
-.modal-header .btn-close {
-    filter: invert(1);
+.modal-header {
+    background-color: #cce5ff;
+    color: #004085;
+    border-bottom: 1px solid #b8daff;
+}
+
+/* H4*/
+h4 {
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 20px;
 }
 
 /* === Botones navbar === */
-.btn-nav {
-    font-weight: 600;
-    padding: 6px 12px;
-    border-radius: 5px;
-    transition: background-color 0.3s ease, color 0.3s ease;
-    text-decoration: none;
+/* Estilo base para botones del navbar */
+/* Opción 1: Celeste pastel muy suave (recomendado) */
+.navbar-pastel {
+    background-color: #e3f2fd;
+    /* celeste pastel claro */
+    color: #004085;
+    /* azul oscuro para textos */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 }
 
+/* Opción 2: Celeste pastel más saturado */
+.navbar-pastel-azul {
+    background-color: #cce5ff;
+    color: #003f5c;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+/* Opción 3: Azul grisáceo suave, sobrio y elegante */
+.navbar-soft-gray {
+    background-color: #f0f4f8;
+    color: #2c3e50;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+/* ----------------- BOTONES NAVBAR ------------------ */
+
+/* Botones base navbar */
 .btn-nav-light {
-    background-color: #f8f9fa;
-    color: #212529;
-    border: 1px solid #f8f9fa;
+    background-color: #e3f2fd;
+    color: #0d6efd;
+    border: none;
+    border-radius: 8px;
+    padding: 6px 12px;
+    transition: all 0.2s ease;
 }
 
-.btn-nav-light:hover,
-.btn-nav-light:focus {
-    background-color: #e2e6ea;
-    border-color: #dae0e5;
-    color: #212529;
+.btn-nav-light:hover {
+    background-color: #d0e7fb;
+    color: #0a58ca;
 }
 
 .btn-nav-primary {
-    background-color: #0d6efd;
-    color: white;
-    border: 1px solid #0d6efd;
+    background-color: #a3d5ff;
+    color: #003f5c;
+    border: none;
+    border-radius: 8px;
+    padding: 6px 12px;
+    transition: all 0.2s ease;
 }
 
-.btn-nav-primary:hover,
-.btn-nav-primary:focus {
-    background-color: #0b5ed7;
-    border-color: #0a58ca;
-    color: white;
+.btn-nav-primary:hover {
+    background-color: #8ec7f4;
+    color: #002b3b;
 }
 
-.btn-nav-outline-light {
+.btn-nav-outline-danger {
     background-color: transparent;
-    color: white;
-    border: 1px solid white;
+    color: #dc3545;
+    border: 1px solid #dc3545;
+    border-radius: 8px;
+    padding: 5px 10px;
+    transition: all 0.2s ease;
 }
 
-.btn-nav-outline-light:hover,
-.btn-nav-outline-light:focus {
-    background-color: white;
-    color: #212529;
+.btn-nav-outline-danger:hover {
+    background-color: #f8d7da;
+    color: #721c24;
 }
+
 
 /* === Otros === */
 .choices__list--dropdown::-webkit-scrollbar {
@@ -249,4 +464,62 @@
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+/* Resultados AJAX animados */
+.detalles-contenedor {
+    max-width: 800px;
+    margin: 2rem auto;
+    /* Espaciado vertical */
+    background-color: #ffffff;
+    padding: 20px 25px;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease-in-out;
+}
+
+
+/* Sombra suave y relleno del contenedor principal */
+.shadow-sm {
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.05) !important;
+}
+
+/* Tabla personalizada */
+.custom-table {
+    background-color: #ffffff;
+    border-radius: 8px;
+    overflow: hidden;
+    font-size: 15px;
+}
+
+.custom-table th,
+.custom-table td {
+    vertical-align: middle;
+    padding: 0.75rem;
+}
+
+.custom-table th {
+    background-color: #003366 !important;
+    color: #ffffff;
+}
+
+.custom-table tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* Contenedor */
+.detalles-contenedor {
+    animation: fadeIn 0.4s ease-in-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }

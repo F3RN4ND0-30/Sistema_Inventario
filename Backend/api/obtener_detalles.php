@@ -21,7 +21,7 @@ if (!$dispositivo) {
 
 $id = $dispositivo['IdDispositivo'];
 
-// Reemplazar IdArea por su descripción
+// Obtener nombre del área
 if (isset($dispositivo['IdArea'])) {
     $areaQuery = $conn->prepare("SELECT descripcion FROM tb_areas WHERE IdArea = ?");
     $areaQuery->bind_param("i", $dispositivo['IdArea']);
@@ -33,7 +33,7 @@ if (isset($dispositivo['IdArea'])) {
     unset($dispositivo['IdArea']);
 }
 
-// Reemplazar IdTipoDispositivo por su nombre
+// Obtener tipo de dispositivo
 if (isset($dispositivo['IdTipoDispositivo'])) {
     $tipoQuery = $conn->prepare("SELECT NombreTipo FROM tb_tipodispositivo WHERE IdTipoDispositivo = ?");
     $tipoQuery->bind_param("i", $dispositivo['IdTipoDispositivo']);
@@ -45,7 +45,7 @@ if (isset($dispositivo['IdTipoDispositivo'])) {
     unset($dispositivo['IdTipoDispositivo']);
 }
 
-// Buscar en tablas específicas
+// Buscar detalles técnicos
 $tablas = ['tb_cpu', 'tb_laptop', 'tb_tablet', 'tb_celular', 'tb_servidor', 'tb_variado'];
 $detalles = null;
 
@@ -66,32 +66,39 @@ if (!$detalles) {
     exit("<div class='alert alert-info text-center'>No se encontraron detalles adicionales para el dispositivo.</div>");
 }
 
-// Mostrar tabla con clases para estilos en estilos.css
+// Mostrar la tabla
 echo "
-<div class='detalles-contenedor'>
-<table class='table table-bordered custom-table'>
-    <colgroup>
-        <col style='width: 280px;'>
-        <col style='width: calc(100% - 280px);'>
-    </colgroup>
-    <thead>
-        <tr><th>Campo</th><th>Valor</th></tr>
-    </thead>
-    <tbody>
+<div class='detalles-contenedor mt-4'>
+    <div class='table-responsive'>
+        <table class='table table-striped table-bordered shadow-sm rounded custom-table'>
+            <thead class='table-dark text-center'>
+                <tr>
+                    <th scope='col'>Campo</th>
+                    <th scope='col'>Valor</th>
+                </tr>
+            </thead>
+            <tbody>
 ";
 
-// Mostrar datos generales
+// Datos generales
 foreach ($dispositivo as $campo => $valor) {
-    echo "<tr><td><strong>" . htmlspecialchars($campo) . "</strong></td><td>" . htmlspecialchars($valor) . "</td></tr>";
+    echo "<tr>
+            <td class='fw-bold text-secondary'>" . htmlspecialchars($campo) . "</td>
+            <td>" . htmlspecialchars($valor) . "</td>
+          </tr>";
 }
 
-// Mostrar detalles específicos (sin IdDispositivo)
+// Datos técnicos
 foreach ($detalles as $campo => $valor) {
     if ($campo === 'IdDispositivo') continue;
-    echo "<tr><td><strong>" . htmlspecialchars($campo) . "</strong></td><td>" . htmlspecialchars($valor) . "</td></tr>";
+    echo "<tr>
+            <td class='fw-bold text-secondary'>" . htmlspecialchars($campo) . "</td>
+            <td>" . htmlspecialchars($valor) . "</td>
+          </tr>";
 }
 
 echo "
-    </tbody>
-</table>
+            </tbody>
+        </table>
+    </div>
 </div>";
