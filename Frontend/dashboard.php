@@ -26,40 +26,31 @@ $areas = $conn->query("SELECT IdArea, descripcion FROM Tb_Areas");
 <html lang="es">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Dashboard</title>
 
-    <!-- Enlazamos el archivo CSS -->
-    <link rel="stylesheet" href="/SISTEMA_INVENTARIO/Backend/css/estilos.css">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
-    <!-- Incluir jQuery desde la CDN (asegúrate que esté antes de otros scripts que lo utilicen) -->
+    <!-- Tu CSS personalizado, debe ir después para sobreescribir Bootstrap -->
+    <link rel="stylesheet" href="/SISTEMA_INVENTARIO/Backend/css/estilos.css" />
+
+    <!-- Google Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+
+    <!-- jQuery (antes de otros scripts que lo necesiten) -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Choices CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
 
-    <!-- Incluir Bootstrap JS (si lo necesitas también) -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </head>
-
-<!-- Bootstrap CSS -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-
-<!-- Bootstrap JS Bundle (incluye Popper) -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 <body class="bg-light">
 
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#">Inventario</a>
-            <a href="detalles_dispositivo.php" class="btn btn-info">Ver detalles dispositivo</a>
-            <div class="d-flex">
-                <span class="navbar-text text-white me-3">Hola, <?= htmlspecialchars($_SESSION["usuario"]) ?></span>
-                <a href="logout.php" class="btn btn-outline-light btn-sm">Cerrar sesión</a>
-            </div>
-        </div>
-    </nav>
+    <?php include 'navbar.php'; ?>
 
     <!-- FORMULARIO -->
     <div class="container text-center mt-4">
@@ -448,11 +439,29 @@ $areas = $conn->query("SELECT IdArea, descripcion FROM Tb_Areas");
             </div>
         </div>
 
-        <div class="container mt-4">
-            <button class="btn btn-primary mt-3" id="btnAgregarDispositivo">Agregar Dispositivo</button>
+        <div class="mt-5"></div>
 
-            <!-- Tabla de dispositivos -->
-            <h4>Listado de Dispositivos</h4>
+        <div class=".container.mt-3.p-3.bg-light.rounded.shadow-sm">
+            <div class="d-flex align-items-center gap-3 m-4">
+                <div class="filtro-contenedor" >
+                    <select id="filtroTipoDispositivo" class="form-select h-100">
+                        <option value="">Todos los Tipos</option>
+                        <?php while ($tipo = $tipos->fetch_assoc()): ?>
+                            <option value="<?= htmlspecialchars($tipo['NombreTipo']) ?>">
+                                <?= htmlspecialchars($tipo['NombreTipo']) ?>
+                            </option>
+                        <?php endwhile; ?>
+                    </select>
+                </div>
+                <div class="flex-grow-1">
+                    <input type="text" id="inputBuscarCodigo" class="form-control" placeholder="Buscar Código Patrimonial" />
+                </div>
+                <div class="flex-shrink-0">
+                    <button class="btn btn-primary" id="btnAgregarDispositivo">Agregar Dispositivo</button>
+                </div>
+            </div>
+
+            <h4 class="mb-3">Listado de Dispositivos</h4>
             <table class="table table-bordered table-striped table-hover">
                 <thead class="table-dark">
                     <tr>
@@ -475,7 +484,7 @@ $areas = $conn->query("SELECT IdArea, descripcion FROM Tb_Areas");
                                 <td><?= htmlspecialchars($row['descripcion']) ?></td>
                                 <td>
                                     <button class="btn btn-sm 
-    <?php echo $row['Estado'] === 'Operativo' ? 'btn-success' : ($row['Estado'] === 'EnReparacion' ? 'btn-warning' : ($row['Estado'] === 'Baja' ? 'btn-danger' : ($row['Estado'] === 'EnPrestamo' ? 'btn-primary' : 'btn-secondary'))); ?>"
+            <?php echo $row['Estado'] === 'Operativo' ? 'btn-success' : ($row['Estado'] === 'EnReparacion' ? 'btn-warning' : ($row['Estado'] === 'Baja' ? 'btn-danger' : ($row['Estado'] === 'EnPrestamo' ? 'btn-primary' : 'btn-secondary'))); ?>"
                                         data-bs-toggle="modal"
                                         data-bs-target="#modalEditarEstado"
                                         data-id="<?php echo $row['IdDispositivo']; ?>"
@@ -496,100 +505,107 @@ $areas = $conn->query("SELECT IdArea, descripcion FROM Tb_Areas");
                 </tbody>
             </table>
         </div>
+    </div>
 
-        <div class="modal fade" id="modalEditarEstado" tabindex="-1" aria-labelledby="modalEditarEstadoLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="modalEditarEstadoLabel">Editar Estado del Dispositivo</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <form id="formEditarEstado">
-                            <!-- Campo oculto para el ID del dispositivo -->
-                            <input type="hidden" id="modalIdDispositivo" name="idDispositivo">
+    <div class="modal fade" id="modalEditarEstado" tabindex="-1" aria-labelledby="modalEditarEstadoLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalEditarEstadoLabel">Editar Estado del Dispositivo</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="formEditarEstado">
+                        <!-- Campo oculto para el ID del dispositivo -->
+                        <input type="hidden" id="modalIdDispositivo" name="idDispositivo">
 
-                            <div class="mb-3">
-                                <label for="modalEstado" class="form-label">Estado</label>
-                                <select class="form-select" id="modalEstado" name="estado" required>
-                                    <option value="Operativo">Operativo</option>
-                                    <option value="EnReparacion">En Reparación</option>
-                                    <option value="Baja">De Baja</option>
-                                    <option value="EnPrestamo">En Préstamo</option>
-                                </select>
-                            </div>
+                        <div class="mb-3">
+                            <label for="modalEstado" class="form-label">Estado</label>
+                            <select class="form-select" id="modalEstado" name="estado" required>
+                                <option value="Operativo">Operativo</option>
+                                <option value="EnReparacion">En Reparación</option>
+                                <option value="Baja">De Baja</option>
+                                <option value="EnPrestamo">En Préstamo</option>
+                            </select>
+                        </div>
 
-                            <div class="mb-3">
-                                <label for="observacion" class="form-label">Observación</label>
-                                <textarea
-                                    class="form-control form-control-sm"
-                                    id="observacion"
-                                    name="observacion"
-                                    placeholder="Ingresar Observación"
-                                    rows="3"></textarea>
-                            </div>
+                        <div class="mb-3">
+                            <label for="observacion" class="form-label">Observación</label>
+                            <textarea
+                                class="form-control form-control-sm"
+                                id="observacion"
+                                name="observacion"
+                                placeholder="Ingresar Observación"
+                                rows="3"></textarea>
+                        </div>
 
-                            <button type="submit" class="btn btn-primary">Actualizar Estado</button>
-                        </form>
-                    </div>
+                        <button type="submit" class="btn btn-primary">Actualizar Estado</button>
+                    </form>
                 </div>
             </div>
         </div>
+    </div>
 
 
 
-        <script src="js/agregar_dispositivo.js"></script>
-        <script src="js/mostrar_areas.js"></script>
-        <script src="js/mostrar_tipodispositivo.js"></script>
-        <script src="js/ocultar_campos.js"></script>
+    <script src="js/agregar_dispositivo.js"></script>
+    <script src="js/mostrar_areas.js"></script>
+    <script src="js/mostrar_tipodispositivo.js"></script>
+    <script src="js/ocultar_campos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+    <script src="js/filtro_choices.js"></script>
+    <script src="js/filtro_busqueda.js"></script>
 
-        <script>
-            $('#modalEditarEstado').on('show.bs.modal', function(event) {
-                const button = $(event.relatedTarget);
-                const idDispositivo = button.data('id');
-                const estado = button.data('estado');
-                const observacion = button.data('observacion') || '';
 
-                console.log('🟡 Observación desde botón:', observacion); // ← agrega esto
+    <script>
+        $('#modalEditarEstado').on('show.bs.modal', function(event) {
+            const button = $(event.relatedTarget);
+            const idDispositivo = button.data('id');
+            const estado = button.data('estado');
+            const observacion = button.data('observacion') || '';
 
-                $('#modalIdDispositivo').val(idDispositivo);
-                $('#modalEstado').val(estado);
-                $('#observacion').val(observacion);
+            console.log('🟡 Observación desde botón:', observacion); // ← agrega esto
 
-                console.log('🟢 Valor asignado a textarea:', $('#observacion').val()); // ← y esto
+            $('#modalIdDispositivo').val(idDispositivo);
+            $('#modalEstado').val(estado);
+            $('#observacion').val(observacion);
+
+            console.log('🟢 Valor asignado a textarea:', $('#observacion').val()); // ← y esto
+        });
+
+        // Manejar el submit del formulario para enviar los datos por AJAX
+        $('#formEditarEstado').submit(function(e) {
+            e.preventDefault(); // Prevenir recarga
+
+            var idDispositivo = $('#modalIdDispositivo').val();
+            var estado = $('#modalEstado').val();
+            var observacion = $('#observacion').val();
+
+            $.ajax({
+                url: '../Backend/dispositivos/actualizar_estado.php',
+                type: 'POST',
+                data: {
+                    idDispositivo: idDispositivo,
+                    estado: estado,
+                    observacion: observacion
+                },
+                success: function(response) {
+                    console.log('Respuesta del servidor:', response);
+                    // Recargar la tabla sin recargar toda la página (opcional)
+                    // actualizarTabla();
+
+                    // Por simplicidad, recargamos toda la página para actualizar datos
+                    location.reload();
+                },
+                error: function(xhr, status, error) {
+                    console.error('Error en la petición AJAX:', error);
+                    alert('Error al actualizar el dispositivo.');
+                }
             });
+        });
+    </script>
 
-            // Manejar el submit del formulario para enviar los datos por AJAX
-            $('#formEditarEstado').submit(function(e) {
-                e.preventDefault(); // Prevenir recarga
-
-                var idDispositivo = $('#modalIdDispositivo').val();
-                var estado = $('#modalEstado').val();
-                var observacion = $('#observacion').val();
-
-                $.ajax({
-                    url: '../Backend/dispositivos/actualizar_estado.php',
-                    type: 'POST',
-                    data: {
-                        idDispositivo: idDispositivo,
-                        estado: estado,
-                        observacion: observacion
-                    },
-                    success: function(response) {
-                        console.log('Respuesta del servidor:', response);
-                        // Recargar la tabla sin recargar toda la página (opcional)
-                        // actualizarTabla();
-
-                        // Por simplicidad, recargamos toda la página para actualizar datos
-                        location.reload();
-                    },
-                    error: function(xhr, status, error) {
-                        console.error('Error en la petición AJAX:', error);
-                        alert('Error al actualizar el dispositivo.');
-                    }
-                });
-            });
-        </script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 </body>
 
 </html>

@@ -1,4 +1,4 @@
-/* Personalización de los bordes de las tarjetas */
+/* === Tarjetas === */
 .card {
     border-radius: 10px;
     border: 1px solid #ddd;
@@ -13,82 +13,240 @@
     background-color: #f8f9fa;
 }
 
-/* Añadir sombras a las tarjetas */
 .card.shadow-sm {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-/* Contenedor principal para detalles del dispositivo */
-#detallesDispositivo,
-.detalles-contenedor {
-    max-width: 900px;
-    margin: 1rem auto;
-    /* margen arriba y abajo, centrado horizontal */
-    padding: 10px;
-    background-color: #f8f9fa;
-    border-radius: 8px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-    overflow-x: auto;
+/* === Contenedor general === */
+.dashboard-container {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
 }
 
-/* Tablas dentro del contenedor */
-#detallesDispositivo table,
-.custom-table,
-.detalles-contenedor table {
-    width: 100% !important;
-    /* ancho completo del contenedor */
-    margin: 0 auto;
-    border-collapse: collapse;
-    table-layout: fixed;
-    /* evitar que columnas cambien ancho según contenido */
-    word-wrap: break-word;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+.dashboard-container h4 {
+    color: #2c3e50;
+    margin-bottom: 1.5rem;
 }
 
-/* Bordes, padding y alineación */
-#detallesDispositivo th,
-#detallesDispositivo td,
-.custom-table th,
-.custom-table td,
-.detalles-contenedor th,
-.detalles-contenedor td {
+/* === Botón Agregar === */
+#btnAgregarDispositivo {
+    background-color: #007bff;
+    border-color: #007bff;
+    box-shadow: 0 4px 6px rgba(0, 123, 255, 0.4);
+    transition: background-color 0.3s ease;
+}
+
+#btnAgregarDispositivo:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+}
+
+/* === Filtro y buscador contenedor === */
+.bg-contenedor {
+    background-color: #f0f9ff;
+    border: 1px solid #cfe2ff;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+/* Filtro personalizado (envoltorio) */
+.filtro-contenedor {
+    background-color: #fff;
+    border: 1px solid #ced4da;
+    border-radius: 10px;
+    padding: 0.15rem 0; /* SOLO padding vertical */
+    width: 220px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+/* Filtro SELECT nativo */
+.filtro-contenedor select.form-select {
+    border: none;
+    padding: 0 10px; /* padding interno para que el texto no quede pegado */
+    height: 100%;
+    width: 100%;
+    background: transparent;
+    color: #000;
+    box-shadow: none;
+    font-size: 1rem;
+    appearance: none; /* mantiene la flecha nativa */
+    box-sizing: border-box; /* que el padding se considere dentro del ancho */
+    line-height: 38px; /* para centrar verticalmente el texto */
+    margin: 0; /* quitar márgenes extras */
+}
+
+.filtro-contenedor select.form-select option {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* === Tabla de dispositivos === */
+.table-hover tbody tr:hover {
+    background-color: #f1f9ff;
+}
+
+#tabla-dispositivos th,
+#tabla-dispositivos td {
     border: 1px solid #dee2e6;
     padding: 12px 15px;
     text-align: center;
     vertical-align: middle;
 }
 
-/* Cabecera con fondo azul y texto blanco */
-#detallesDispositivo thead,
-.custom-table thead,
-.detalles-contenedor th {
+#tabla-dispositivos thead {
     background-color: #0d6efd !important;
     color: white !important;
     font-weight: 600;
 }
 
-/* Primera columna con ancho fijo para evitar que cambie tamaño */
-.detalles-contenedor th:first-child,
-.detalles-contenedor td:first-child,
-#detallesDispositivo th:first-child,
-#detallesDispositivo td:first-child,
-.custom-table th:first-child,
-.custom-table td:first-child {
-    width: 280px;
-    word-wrap: break-word;
-}
-
-/* Filas impares con fondo gris claro */
-#detallesDispositivo tbody tr:nth-child(odd),
-.custom-table tbody tr:nth-child(odd),
-.detalles-contenedor tbody tr:nth-child(odd) {
+#tabla-dispositivos tbody tr:nth-child(odd) {
     background-color: #f8f9fa !important;
 }
 
-/* Hover sobre fila */
-#detallesDispositivo tbody tr:hover,
-.custom-table tbody tr:hover,
-.detalles-contenedor tbody tr:hover {
-    background-color: #e9ecef !important;
+/* === Choices.js custom === */
+.choices {
+    max-width: 250px;
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 0.95rem;
+}
+
+.choices__inner {
+    width: 220px !important;
+    border-radius: 8px;
+    border: 1px solid #ced4da;
+    color: #000;
+    background-color: #fff;
+}
+
+.choices__inner.is-focused,
+.choices__inner:hover {
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+    background-color: #ffffff;
+}
+
+.choices__list--dropdown {
+    max-height: 200px !important;
+    overflow-y: auto;
+}
+
+.choices__item--selectable {
+    padding: 0.4rem 0.8rem;
+    color: #000000;
+}
+
+.choices__item--selectable.is-highlighted {
+    background-color: #e2e6ea;
+    color: #000000;
+}
+
+/* === Modal === */
+.modal-header {
+    background-color: #007bff;
+    color: white;
+}
+
+.modal-header .btn-close {
+    filter: invert(1);
+}
+
+/* === Botones navbar === */
+.btn-nav {
+    font-weight: 600;
+    padding: 6px 12px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    text-decoration: none;
+}
+
+.btn-nav-light {
+    background-color: #f8f9fa;
+    color: #212529;
+    border: 1px solid #f8f9fa;
+}
+
+.btn-nav-light:hover,
+.btn-nav-light:focus {
+    background-color: #e2e6ea;
+    border-color: #dae0e5;
+    color: #212529;
+}
+
+.btn-nav-primary {
+    background-color: #0d6efd;
+    color: white;
+    border: 1px solid #0d6efd;
+}
+
+.btn-nav-primary:hover,
+.btn-nav-primary:focus {
+    background-color: #0b5ed7;
+    border-color: #0a58ca;
+    color: white;
+}
+
+.btn-nav-outline-light {
+    background-color: transparent;
+    color: white;
+    border: 1px solid white;
+}
+
+.btn-nav-outline-light:hover,
+.btn-nav-outline-light:focus {
+    background-color: white;
+    color: #212529;
+}
+
+/* === Otros === */
+.choices__list--dropdown::-webkit-scrollbar {
+    width: 6px;
+}
+
+.choices__list--dropdown::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 3px;
+}
+
+.choices__list--dropdown::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.choices {
+    width: 220px !important;
+    max-width: 220px !important;
+    min-width: 220px !important;
+}
+
+.choices__inner {
+    width: 220px !important;
+    max-width: 220px !important;
+    min-width: 220px !important;
+    border-radius: 8px;
+    border: 1px solid #ced4da;
+    background-color: #fff;
+    color: #000;
+    display: flex;
+    align-items: center;
+}
+
+/* Que el texto seleccionado no achique el contenedor */
+.choices__item--selectable {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Centrar horizontalmente el select con Choices.js */
+.select-centrado {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

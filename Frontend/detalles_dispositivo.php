@@ -14,6 +14,7 @@ if (!isset($_SESSION['usuario'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Detalles del Dispositivo</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    
     <!-- Enlazamos el archivo CSS -->
     <link rel="stylesheet" href="/SISTEMA_INVENTARIO/Backend/css/estilos.css">
     <style>
@@ -43,17 +44,8 @@ if (!isset($_SESSION['usuario'])) {
 </head>
 
 <body>
-    <!-- Navbar oscuro -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#">Inventario</a>
-            <a href="detalles_dispositivo.php" class="btn btn-info ms-3">Ver detalles dispositivo</a>
-            <div class="d-flex ms-auto align-items-center">
-                <span class="navbar-text text-white me-3">Hola, <?= htmlspecialchars($_SESSION["usuario"]) ?></span>
-                <a href="logout.php" class="btn btn-outline-light btn-sm">Cerrar sesión</a>
-            </div>
-        </div>
-    </nav>
+
+    <?php include 'navbar.php'; ?>
 
     <main class="container bg-white rounded shadow-sm">
         <h1 class="mb-4 text-center">Buscar Detalles del Dispositivo</h1>

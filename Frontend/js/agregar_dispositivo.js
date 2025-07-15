@@ -11,20 +11,15 @@ function escapeHtmlAttr(str) {
 
 async function actualizarTabla() {
     const tbody = document.getElementById('tabla-dispositivos');
-    console.log('▶️ actualizarTabla disparada, tbody encontrada:', !!tbody);
 
     try {
         const resp = await fetch('../Backend/dispositivos/obtener_dispositivos.php');
-        console.log('➡️ Fetch HTTP status:', resp.status);
         const text = await resp.text();
-        console.log('📄 Respuesta raw:', text);
 
         let data;
         try {
             data = JSON.parse(text);
-            console.log('✅ JSON parseado:', data);
         } catch (jsonErr) {
-            console.error('❌ Error parseando JSON:', jsonErr);
             throw new Error('JSON inválido');
         }
 
@@ -72,10 +67,7 @@ async function actualizarTabla() {
                 </tr>`);
         });
 
-        console.log('✅ Tabla actualizada correctamente con', data.length, 'filas');
-
     } catch (error) {
-        console.error('❗ Error actualizando la tabla:', error);
         tbody.innerHTML = '<tr><td colspan="7" class="text-center text-danger">Error cargando datos.</td></tr>';
     }
 }
@@ -125,7 +117,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const codElem = document.getElementById('cod_patrimonial');
         const areaElem = document.getElementById('modalArea');
         const estadoElem = document.getElementById('crearEstado');
-        const obsElem = document.getElementById('observacion');
+        const obsElem = document.getElementById('observaciones');
 
         if (!codElem || !areaElem || !estadoElem || !obsElem) {
             console.error('Falta algún input general');
@@ -213,7 +205,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     function limpiarCampos() {
-        const camposGenerales = ['cod_patrimonial', 'modalArea', 'crearEstado', 'observacion', 'modalTipoDispositivo'];
+        const camposGenerales = ['cod_patrimonial', 'modalArea', 'crearEstado', 'observaciones', 'modalTipoDispositivo'];
         camposGenerales.forEach(id => {
             const el = document.getElementById(id);
             if (el) el.value = '';
