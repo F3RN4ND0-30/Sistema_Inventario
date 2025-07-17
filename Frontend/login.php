@@ -44,7 +44,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <title>Login - Inventario</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="/SISTEMA_INVENTARIO/Backend/css/estilos.css" />
+    <link rel="stylesheet" href="../Backend/css/estilos.css" />
+
 </head>
 
 <body class="login-page d-flex align-items-center justify-content-center" style="min-height: 100vh;">
@@ -53,8 +54,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <h1 class="titulo-institucional">Sistema de Inventario del Área de Sistemas</h1>
         </div>
 
-        <div class="login-container">
-            <div class="login-image" role="img" aria-label="Escudo de Pisco"></div>
+        <div class="login-container d-flex flex-column align-items-center text-center">
+            <div class="login-image mb-3" role="img" aria-label="Escudo de Pisco"></div>
 
             <div class="login-form">
                 <h3>Iniciar Sesión</h3>

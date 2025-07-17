@@ -10,7 +10,7 @@ function escapeHtmlAttr(str) {
 }
 
 async function actualizarTabla() {
-    const tbody = document.getElementById('tabla-dispositivos');
+    const tbody = document.getElementById('cuerpo-tabla-dispositivos');
 
     try {
         const resp = await fetch('../Backend/dispositivos/obtener_dispositivos.php');
@@ -67,6 +67,7 @@ async function actualizarTabla() {
                 </tr>
             `);
         });
+        filtrarYPaginar(1);
 
     } catch (error) {
         tbody.innerHTML = '<tr><td colspan="7" class="text-center text-danger">Error cargando datos.</td></tr>';
@@ -221,11 +222,13 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             await actualizarTabla();
+            filtrarYPaginar(1);
 
         } catch (error) {
             alert('🚫 Error al guardar dispositivo: ' + error.message);
             console.error(error);
         }
+
     });
 
     function limpiarCampos() {

@@ -14,11 +14,11 @@ if (!isset($data['IdDispositivo'])) {
 }
 
 $idDispositivo      = $data['IdDispositivo'];
-$tamano_pantalla    = $data['Tamaño_Pantalla'] ?? '';
+$tamano_pantalla    = $data['Tamano_Pantalla'] ?? '';
 $almacenamiento     = $data['Almacenamiento'] ?? '';
 $sistema_operativo  = $data['Sistema_Operativo'] ?? '';
 
-$sql = "INSERT INTO tb_tablet (IdDispositivo, Tamaño_Pantalla, Almacenamiento, Sistema_Operativo) 
+$sql = "INSERT INTO tb_tablet (IdDispositivo, Tamano_Pantalla, Almacenamiento, Sistema_Operativo) 
         VALUES (?, ?, ?, ?)";
 $stmt = $conn->prepare($sql);
 

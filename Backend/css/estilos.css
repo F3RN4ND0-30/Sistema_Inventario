@@ -106,7 +106,7 @@
 
 /* Contenedor de login completo */
 .login-container {
-    max-width: 880px;
+    max-width: 400px;
     width: 100%;
     background: white;
     border-radius: 10px;
@@ -118,11 +118,13 @@
 
 /* Imagen del escudo */
 .login-image {
-    flex: 1;
+    width: 180px;
+    height: 180px;
+    margin-top: 30px;
     background: url('../img/Escudo_de_Pisco.png') center center no-repeat;
     background-size: contain;
-    min-height: 420px;
-    background-color: #f0f0f0;
+    background-repeat: no-repeat;
+    background-position: center;
 }
 
 /* Formulario */
@@ -163,18 +165,22 @@
 /* Responsivo */
 @media (max-width: 768px) {
     .login-container {
-        flex-direction: column;
-        max-width: 90%;
+        padding: 1rem;
     }
 
     .login-image {
-        order: 2;
-        min-height: 200px;
+        width: 150px;
+        height: 150px;
+        margin: 0 auto 3rem;
+        margin-top: 10px;
     }
 
     .login-form {
-        order: 1;
-        padding: 30px 20px;
+        width: 100%;
+    }
+
+    .login-header h1 {
+        font-size: 2rem;
     }
 }
 
@@ -419,6 +425,11 @@ h4 {
     color: #721c24;
 }
 
+.navbar-text.d-flex {
+    white-space: nowrap;
+    /* evitar que se parta el texto en varias líneas */
+}
+
 
 /* === Otros === */
 .choices__list--dropdown::-webkit-scrollbar {
@@ -521,5 +532,150 @@ h4 {
     to {
         opacity: 1;
         transform: translateY(0);
+    }
+}
+
+.oculto-pagina {
+    display: none !important;
+}
+
+/* RESPONSIVO */
+
+@media (max-width: 768px) {
+
+    .container,
+    .dashboard-container {
+        padding: 15px;
+        border-radius: 8px;
+        box-shadow: none;
+    }
+
+    .table-responsive {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    table.table {
+        width: 100%;
+        min-width: 600px;
+    }
+
+    .filtro-contenedor {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    .select-centrado {
+        justify-content: flex-start;
+    }
+
+    #btnAgregarDispositivo,
+    .btn,
+    .btn-nav-light,
+    .btn-nav-primary,
+    .btn-nav-outline-danger {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    .login-form input,
+    .login-form button {
+        width: 100%;
+    }
+
+    .detalles-contenedor {
+        padding: 15px;
+        margin: 1rem auto;
+    }
+
+    .navbar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .navbar .btn {
+        width: 100%;
+        margin-bottom: 8px;
+    }
+
+    #navbarContenido {
+        padding-top: 0.5rem;
+        margin-top: 0.5rem;
+    }
+
+    #inputBuscarCodigo,
+    #btnAgregarDispositivo {
+        width: 100%;
+    }
+
+    .filtro-contenedor {
+        background-color: #fff;
+        border: 1px solid #ced4da;
+        border-radius: 10px;
+        padding: 0.15rem 0;
+        /* SOLO padding vertical */
+        width: 180px;
+        height: 38px;
+        display: flex;
+        align-items: left;
+        box-sizing: border-box;
+        margin-left: -20px;
+    }
+
+    .choices__list--dropdown::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    .choices__list--dropdown::-webkit-scrollbar-thumb {
+        background: #ccc;
+        border-radius: 3px;
+    }
+
+    .choices__list--dropdown::-webkit-scrollbar-track {
+        background: transparent;
+    }
+
+    .choices {
+        width: 180px !important;
+        max-width: 180px !important;
+        min-width: 180px !important;
+    }
+
+    .choices__inner {
+        width: 220px !important;
+        max-width: 220px !important;
+        min-width: 220px !important;
+        border-radius: 8px;
+        border: 1px solid #ced4da;
+        background-color: #fff;
+        color: #000;
+        display: flex;
+        align-items: center;
+    }
+
+    /* Que el texto seleccionado no achique el contenedor */
+    .choices__item--selectable {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .filtro-contenedor select.form-select option {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    #inputBuscarCodigo {
+        margin-left: 20px;
+    }
+
+    .table-responsive {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    table.table {
+        min-width: 650px;
     }
 }

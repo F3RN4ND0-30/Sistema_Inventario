@@ -32,26 +32,24 @@ $areas = $conn->query("SELECT IdArea, descripcion FROM Tb_Areas");
 
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Choices CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
 
     <!-- Tu CSS personalizado, debe ir después para sobreescribir Bootstrap -->
-    <link rel="stylesheet" href="/SISTEMA_INVENTARIO/Backend/css/estilos.css" />
+    <link rel="stylesheet" href="../Backend/css/estilos.css" />
 
     <!-- Google Icons -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
 
     <!-- jQuery (antes de otros scripts que lo necesiten) -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <!-- Choices CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css" />
 
     <!-- Bootstrap JS Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 
 <body class="bg-light">
-
     <?php include 'navbar.php'; ?>
-
     <!-- FORMULARIO -->
     <div class="container text-center mt-4">
         <div class="row justify-content-center">
@@ -193,8 +191,8 @@ $areas = $conn->query("SELECT IdArea, descripcion FROM Tb_Areas");
                         <div id="camposCelular" class="d-none">
                             <div class="row">
                                 <div class="col-md-6 mb-3">
-                                    <label for="Tamaño_Pantalla" class="form-label">Tamaño de la Pantalla:</label>
-                                    <input type="text" class="form-control form-control-sm" id="Tamaño_Pantalla" name="Tamaño_Pantalla" placeholder="Ej. 6.5 pulgadas" />
+                                    <label for="Tamano_Pantalla" class="form-label">Tamaño de la Pantalla:</label>
+                                    <input type="text" class="form-control form-control-sm" id="Tamano_Pantalla" name="Tamano_Pantalla" placeholder="Ej. 6.5 pulgadas" />
                                 </div>
                                 <div class="col-md-6 mb-3">
                                     <label for="Almacenamiento" class="form-label">Almacenamiento Interno:</label>
@@ -213,8 +211,8 @@ $areas = $conn->query("SELECT IdArea, descripcion FROM Tb_Areas");
                         <div id="camposTablet" class="d-none">
                             <div class="row">
                                 <div class="col-md-6 mb-3">
-                                    <label for="Tamaño_Pantalla" class="form-label">Tamaño de la Pantalla:</label>
-                                    <input type="text" class="form-control form-control-sm" id="Tamaño_Pantalla" name="Tamaño_Pantalla" placeholder="Ej. 6.5 pulgadas" />
+                                    <label for="Tamano_Pantalla" class="form-label">Tamaño de la Pantalla:</label>
+                                    <input type="text" class="form-control form-control-sm" id="Tamano_Pantalla" name="Tamano_Pantalla" placeholder="Ej. 6.5 pulgadas" />
                                 </div>
                                 <div class="col-md-6 mb-3">
                                     <label for="Almacenamiento" class="form-label">Almacenamiento Interno:</label>
@@ -441,69 +439,79 @@ $areas = $conn->query("SELECT IdArea, descripcion FROM Tb_Areas");
 
         <div class="mt-5"></div>
 
-        <div class=".container.mt-3.p-3.bg-light.rounded.shadow-sm">
-            <div class="d-flex align-items-center gap-3 m-4">
-                <div class="filtro-contenedor" >
-                    <select id="filtroTipoDispositivo" class="form-select h-100">
-                        <option value="">Todos los Tipos</option>
-                        <?php while ($tipo = $tipos->fetch_assoc()): ?>
-                            <option value="<?= htmlspecialchars($tipo['NombreTipo']) ?>">
-                                <?= htmlspecialchars($tipo['NombreTipo']) ?>
-                            </option>
-                        <?php endwhile; ?>
-                    </select>
-                </div>
-                <div class="flex-grow-1">
-                    <input type="text" id="inputBuscarCodigo" class="form-control" placeholder="Buscar Código Patrimonial" />
-                </div>
-                <div class="flex-shrink-0">
+        <div class=".container mt-3.p-3.bg-light.rounded.shadow-sm">
+            <div class="row g-3 m-4 align-items-center">
+                <div class="col-12 col-md-3 order-1 order-md-3">
                     <button class="btn btn-primary" id="btnAgregarDispositivo">Agregar Dispositivo</button>
+                </div>
+                <div class="col-6 col-md-3 order-2 order-md-1">
+                    <div class="filtro-contenedor">
+                        <select id="filtroTipoDispositivo" class="form-select h-100">
+                            <option value="">Todos los Tipos</option>
+                            <?php while ($tipo = $tipos->fetch_assoc()): ?>
+                                <option value="<?= htmlspecialchars($tipo['NombreTipo']) ?>">
+                                    <?= htmlspecialchars($tipo['NombreTipo']) ?>
+                                </option>
+                            <?php endwhile; ?>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-6 col-md-6 order-3 order-md-2">
+                    <input type="text" id="inputBuscarCodigo" class="form-control" placeholder="Buscar Código Patrimonial" />
                 </div>
             </div>
 
             <h4 class="mb-3">Listado de Dispositivos</h4>
-            <table class="table table-bordered table-striped table-hover">
-                <thead class="table-dark">
-                    <tr>
-                        <th>ID</th>
-                        <th>Código Patrimonial</th>
-                        <th>Tipo Dispositivo</th>
-                        <th>Área</th>
-                        <th>Estado</th>
-                        <th>Fecha Registro</th>
-                        <th>Observaciones</th>
-                    </tr>
-                </thead>
-                <tbody id="tabla-dispositivos">
-                    <?php if ($result && $result->num_rows > 0): ?>
-                        <?php while ($row = $result->fetch_assoc()): ?>
-                            <tr>
-                                <td><?= $row['IdDispositivo'] ?></td>
-                                <td><?= htmlspecialchars($row['CodigoPatrimonial']) ?></td>
-                                <td><?= htmlspecialchars($row['NombreTipo'] ?? 'Sin tipo') ?></td>
-                                <td><?= htmlspecialchars($row['descripcion']) ?></td>
-                                <td>
-                                    <button class="btn btn-sm 
-            <?php echo $row['Estado'] === 'Operativo' ? 'btn-success-pastel' : ($row['Estado'] === 'EnReparacion' ? 'btn-warning-pastel' : ($row['Estado'] === 'Baja' ? 'btn-danger-pastel' : ($row['Estado'] === 'EnPrestamo' ? 'btn-primary-pastel' : 'btn-secondary-pastel'))); ?>"
-                                        data-bs-toggle="modal"
-                                        data-bs-target="#modalEditarEstado"
-                                        data-id="<?php echo $row['IdDispositivo']; ?>"
-                                        data-estado="<?php echo $row['Estado']; ?>"
-                                        data-observacion="<?php echo htmlspecialchars($row['Observaciones'], ENT_QUOTES); ?>">
-                                        <?php echo $row['Estado']; ?>
-                                    </button>
-                                </td>
-                                <td><?= $row['FechaRegistro'] ?></td>
-                                <td><?= htmlspecialchars($row['Observaciones']) ?></td>
-                            </tr>
-                        <?php endwhile; ?>
-                    <?php else: ?>
+
+            <div class="table-responsive">
+                <table id="tabla-dispositivos" class="table table-bordered table-striped table-hover">
+                    <thead class="table-dark">
                         <tr>
-                            <td colspan="6" class="text-center">No hay dispositivos registrados.</td>
+                            <th>ID</th>
+                            <th>Código Patrimonial</th>
+                            <th>Tipo Dispositivo</th>
+                            <th>Área</th>
+                            <th>Estado</th>
+                            <th>Fecha Registro</th>
+                            <th>Observaciones</th>
                         </tr>
-                    <?php endif; ?>
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody id="cuerpo-tabla-dispositivos">
+                        <?php if ($result && $result->num_rows > 0): ?>
+                            <?php while ($row = $result->fetch_assoc()): ?>
+                                <tr>
+                                    <td><?= $row['IdDispositivo'] ?></td>
+                                    <td><?= htmlspecialchars($row['CodigoPatrimonial']) ?></td>
+                                    <td><?= htmlspecialchars($row['NombreTipo'] ?? 'Sin tipo') ?></td>
+                                    <td><?= htmlspecialchars($row['descripcion']) ?></td>
+                                    <td>
+                                        <button class="btn btn-sm 
+            <?php echo $row['Estado'] === 'Operativo' ? 'btn-success-pastel' : ($row['Estado'] === 'EnReparacion' ? 'btn-warning-pastel' : ($row['Estado'] === 'Baja' ? 'btn-danger-pastel' : ($row['Estado'] === 'EnPrestamo' ? 'btn-primary-pastel' : 'btn-secondary-pastel'))); ?>"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#modalEditarEstado"
+                                            data-id="<?php echo $row['IdDispositivo']; ?>"
+                                            data-estado="<?php echo $row['Estado']; ?>"
+                                            data-observacion="<?php echo htmlspecialchars($row['Observaciones'], ENT_QUOTES); ?>">
+                                            <?php echo $row['Estado']; ?>
+                                        </button>
+                                    </td>
+                                    <td><?= $row['FechaRegistro'] ?></td>
+                                    <td><?= htmlspecialchars($row['Observaciones']) ?></td>
+                                </tr>
+                            <?php endwhile; ?>
+                        <?php else: ?>
+                            <tr>
+                                <td colspan="6" class="text-center">No hay dispositivos registrados.</td>
+                            </tr>
+                        <?php endif; ?>
+                    </tbody>
+                </table>
+            </div>
+            <div class="d-flex justify-content-end mt-3">
+                <nav>
+                    <ul class="pagination pagination-sm mb-0" id="paginacion"></ul>
+                </nav>
+            </div>
         </div>
     </div>
 
@@ -554,6 +562,90 @@ $areas = $conn->query("SELECT IdArea, descripcion FROM Tb_Areas");
     <script src="js/ocultar_campos.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
     <script src="js/filtro_busqueda.js"></script>
+
+    <style>
+        .oculto-pagina {
+            display: none;
+        }
+    </style>
+    <script>
+        let paginaActual = 1;
+        const filasPorPagina = 5;
+
+        function filtrarYPaginar(pagina = 1) {
+            const select = document.getElementById('filtroTipoDispositivo');
+            const inputBuscar = document.getElementById('inputBuscarCodigo');
+            const tipoSeleccionado = select.value?.toLowerCase() || '';
+            const codigoBuscado = inputBuscar.value.toLowerCase() || '';
+
+            const filas = Array.from(document.querySelectorAll('#tabla-dispositivos tbody tr'));
+            const filtradas = filas.filter(fila => {
+                const tipo = fila.cells[2].textContent.toLowerCase();
+                const codigo = fila.cells[1].textContent.toLowerCase();
+                return (tipoSeleccionado === '' || tipo === tipoSeleccionado) &&
+                    (codigoBuscado === '' || codigo.includes(codigoBuscado));
+            });
+
+            const totalPaginas = Math.max(Math.ceil(filtradas.length / filasPorPagina), 1);
+            paginaActual = Math.min(Math.max(1, pagina), totalPaginas);
+
+            const inicio = (paginaActual - 1) * filasPorPagina;
+            const visibles = filtradas.slice(inicio, inicio + filasPorPagina);
+
+            filas.forEach(f => f.classList.add('oculto-pagina'));
+            visibles.forEach(f => f.classList.remove('oculto-pagina'));
+
+            renderizarBotones(totalPaginas);
+            console.log('filtrarYPaginar:', filtradas.length, 'filtradas; página', paginaActual, 'de', totalPaginas);
+        }
+
+        function renderizarBotones(totalPaginas) {
+            const ul = document.getElementById('paginacion');
+            ul.innerHTML = '';
+            if (totalPaginas <= 1) return;
+
+            const crear = (p, txt, active = false, disabled = false) => {
+                const li = document.createElement('li');
+                li.className = `page-item${active?' active':''}${disabled?' disabled':''}`;
+                const a = document.createElement('a');
+                a.className = 'page-link';
+                a.href = '#';
+                a.textContent = txt || p;
+                if (!disabled) {
+                    a.onclick = e => {
+                        e.preventDefault();
+                        filtrarYPaginar(p);
+                    };
+                }
+                li.appendChild(a);
+                ul.appendChild(li);
+            };
+
+            crear(paginaActual - 1, '«', false, paginaActual === 1);
+            const max = 5;
+            let start = Math.max(1, paginaActual - 2);
+            const end = Math.min(Math.ceil(document.querySelectorAll('#tabla-dispositivos tbody tr:not(.oculto-pagina)').length / filasPorPagina), start + max - 1);
+
+            if (start > 1) {
+                crear(1);
+                if (start > 2) crear(null, '…', false, true);
+            }
+            for (let i = start; i <= end; i++) crear(i, null, i === paginaActual);
+            if (end < totalPaginas) {
+                if (end < totalPaginas - 1) crear(null, '…', false, true);
+                crear(totalPaginas);
+            }
+            crear(paginaActual + 1, '»', false, paginaActual === totalPaginas);
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('filtroTipoDispositivo').addEventListener('change', () => filtrarYPaginar(1));
+            document.getElementById('inputBuscarCodigo').addEventListener('input', () => filtrarYPaginar(1));
+            filtrarYPaginar(1);
+        });
+    </script>
+
+
 
 
     <script>

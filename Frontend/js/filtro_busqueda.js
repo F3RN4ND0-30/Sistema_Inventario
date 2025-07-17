@@ -1,12 +1,13 @@
 document.addEventListener('DOMContentLoaded', function () {
     const select = document.getElementById('filtroTipoDispositivo');
+    const inputBuscar = document.getElementById('inputBuscarCodigo');
 
     // Verificamos si el select existe
     if (!select) return;
 
-    // ✅ Inicializar Choices.js con búsqueda y estilo
+    // Inicializar Choices.js (si usas)
     const choices = new Choices(select, {
-        searchEnabled: false, // puedes cambiarlo a true si luego quieres activar el buscador interno
+        searchEnabled: false,
         itemSelectText: '',
         shouldSort: false,
         placeholder: true,
@@ -16,7 +17,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    // ✅ Estilos visuales del dropdown para mostrar máximo 5 opciones
     select.addEventListener('showDropdown', () => {
         const dropdown = select.closest('.choices').querySelector('.choices__list--dropdown');
         if (dropdown) {
@@ -25,24 +25,31 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    // ✅ Función para filtrar tabla combinando select y buscador
+    // Función que filtra la tabla según select e input
     function filtrarTabla() {
         const tipoSeleccionado = select.value?.toLowerCase() || '';
-        const codigoBuscado = document.getElementById('inputBuscarCodigo')?.value.toLowerCase() || '';
+        const codigoBuscado = inputBuscar?.value.toLowerCase() || '';
 
-        document.querySelectorAll('#tabla-dispositivos tr').forEach((fila) => {
+        document.querySelectorAll('#tabla-dispositivos tbody tr').forEach(fila => {
             const tipo = fila.querySelector('td:nth-child(3)')?.textContent.toLowerCase() || '';
             const codigo = fila.querySelector('td:nth-child(2)')?.textContent.toLowerCase() || '';
 
-            const mostrar =
-                (tipoSeleccionado === '' || tipo === tipoSeleccionado) &&
+            const mostrar = (tipoSeleccionado === '' || tipo === tipoSeleccionado) &&
                 (codigoBuscado === '' || codigo.includes(codigoBuscado));
 
             fila.style.display = mostrar ? '' : 'none';
         });
+
+        filtrarYPaginar(1);
     }
 
-    // ✅ Eventos para activar el filtro
+    // Escuchamos cambios en el select y el input para filtrar en tiempo real
     select.addEventListener('change', filtrarTabla);
-    document.getElementById('inputBuscarCodigo')?.addEventListener('input', filtrarTabla);
+
+    if (inputBuscar) {
+        inputBuscar.addEventListener('input', filtrarTabla);
+    }
+
+    // Inicialmente mostramos todo y aplicamos paginación
+    filtrarTabla();
 });
